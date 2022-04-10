@@ -137,6 +137,5 @@ int	main(int argc, char **argv)
 	// }
 	double ***tab = str_arr_atoi(filepath);
 	
-	
 	// renderer();
 }

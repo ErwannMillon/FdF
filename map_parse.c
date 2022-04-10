@@ -76,7 +76,8 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 			printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
 			j++;
 		}
-		arr[j] = NULL;
+		// printf("Final index: %d," , j);
+		arr[i][j] = NULL;
 		i++;
 		free(line);
 		line = get_next_line(file);
