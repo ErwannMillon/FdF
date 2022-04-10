@@ -67,13 +67,13 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 		results = ft_split(line, ' ');
 		// print_split(results);
 		j = 0;
-		while (results[j] && results[j] != '\n')
+		while (results[j] && results[j][0] != '\n')
 		{
 			arr[i][j] = malloc(4 * sizeof(double));
 			arr[i][j][0] = j;
 			arr[i][j][1] = i;
 			arr[i][j][2] = ft_atoi(results[j]); 
-			printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
+			// printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
 			j++;
 		}
 		// printf("Final index: %d," , j);

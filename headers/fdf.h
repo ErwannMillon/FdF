@@ -27,7 +27,7 @@ int	close_win(int keycode, t_vars *vars);
 // # define 
 
 # define PI 3.1415926535
-
+float *multiply_coordinates_by_matrix(float *x, float **y);
 double ***str_arr_atoi(char *filepath);
 
 

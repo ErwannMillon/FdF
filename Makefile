@@ -1,4 +1,4 @@
-SRCS := fdf.c win_utils.c map_parse.c
+SRCS := fdf.c win_utils.c map_parse.c free_functions.c matrix_operations.c
 NAME = fdf
 CFLAGS = -Wall -Wextra -Werror
 HEADERS = libft.h ft_printf.h get_next_line.h fdf.h
