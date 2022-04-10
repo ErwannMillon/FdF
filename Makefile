@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 HEADERS = libft.h ft_printf.h get_next_line.h fdf.h
 INCLUDEDIR = ./headers
 MLXFLAGS = -lmlx -framework OpenGL -framework AppKit
-ASAN = -fsanitize=address
+ASAN = -fsanitize=address -g
 OBJS := $(SRCS:%.c=%.o)
 
 #ADD CFLAGS!!!

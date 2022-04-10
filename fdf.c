@@ -113,6 +113,7 @@ int renderer(void)
 	draw_rotated_square(&img, a, 40, red);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_loop(vars.mlx);
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -136,11 +137,9 @@ int	main(int argc, char **argv)
 	// 	line = get_next_line(file);
 	// }
 	double ***tab = str_arr_atoi(filepath);
-	float test[3][3] = {{1.0, 2.0 ,3.0},{1.0, 2.0, 3.0},{1.0, 2.0, 3.0}};
-	float testcoord[3] = {5.0, 6.0 ,7.0};
-	float **ptest = *test;
-	float *ctest= testcoord;
-	multiply_coordinates_by_matrix(NULL, NULL);
+	const float matrix[3][3] = {{1.0, 2.0 ,3.0},{4.0, 0.0, 3.0},{1.0, 9.0, 11.0}};
+	const float coordinates[3] = {5.0, 6.0 ,7.0};
+	multiply_coordinates_by_matrix((const float *)coordinates, (const float **)matrix);
 
 	// renderer();
 }
