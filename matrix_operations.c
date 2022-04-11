@@ -59,7 +59,7 @@ void print_tab(double ***tab)
 		j = 0;
 		while (tab[i][j])
 		{
-			printf("i: %d index: %d, arr[%d, %d, %d]\n", i, j, (int)tab[i][j][0], (int)tab[i][j][1], (int)tab[i][j][2]);
+			// printf("i: %d index: %d, arr[%d, %d, %d]\n", i, j, (int)tab[i][j][0], (int)tab[i][j][1], (int)tab[i][j][2]);
 			// printf("(%d, %d)\n", (int)tab[i][j][0], (int)tab[i][j][1]);
 			j++;
 		}
@@ -88,7 +88,7 @@ void draw_tab(int ***tab)
 
 double ***isometric_projection(double ***tab)
 {
-	print_tab(tab);
+	// print_tab(tab);
 	double firstiso[3][3] = {{cos(BETA), 0.0, (-1 * sin(BETA))}, {0.0, 1.0, 0.0},{sin(BETA), 0.0, cos(BETA)}};
 	double secondiso[3][3] = {{1.0, 0.0, 0.0}, {0.0, cos(ALPHA), sin(ALPHA)},{0.0, (-1 * sin(ALPHA)), cos(ALPHA)}};
 	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};

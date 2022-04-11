@@ -20,12 +20,12 @@ typedef struct	s_data {
 }				t_data;
 int	close_win(int keycode, t_vars *vars);
 
-# define ORIGIN_X 0
-# define ORIGIN_Y 0
+# define ORIGIN_X 200
+# define ORIGIN_Y 200
 
 // # define ORIGIN_X 260
 // # define ORIGIN_Y 540
-# define INIT_SCALE 10
+# define INIT_SCALE 60
 # define VERTICAL_SCALE 5
 // # define MARGIN_SIDE 240
 // # define MARGIN_TOP 90
@@ -41,7 +41,8 @@ void 	draw_rotated_square(t_data *data, int *a, int size, int color);
 void	draw_square(t_data *data, int *a, int size, int color);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 double 	***isometric_projection(double ***tab);
-void 	draw_wireframe(double ***tab, t_vars *vars, t_data *data);
+void 	draw_wireframe(double ***tab, t_vars *varss, t_data *data);
+void 	print_tab(double ***tab);
 
 
 #endif

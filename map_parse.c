@@ -72,7 +72,7 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 			arr[i][j] = malloc(4 * sizeof(double));
 			arr[i][j][0] = j * INIT_SCALE;
 			arr[i][j][1] = i * INIT_SCALE;
-			arr[i][j][2] = ft_atoi(results[j]) * (INIT_SCALE); 
+			arr[i][j][2] = ft_atoi(results[j]) * (INIT_SCALE / 4); 
 			// printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
 			j++;
 		}

@@ -23,7 +23,7 @@ int renderer(void)
 	// draw_square(&img, a, 200, 0x0000FF00);
 	// draw_rotated_square(&img, a, 200, red);
 	// draw_straight_line(&img, a, b, 0x00FF0000);
-	// draw_square(&img, a, 200, 0x00FF0000);
+	draw_square(&img, a, 200, 0x00FF0000);
 	// draw_rotated_square(&img, a, 40, red);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_loop(vars.mlx);
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 	int	file;
 
 	// file = open("./test_maps/42.fdf", O_RDONLY);
-	char *filepath = "./test_maps/42.fdf";
+	char *filepath = "./test_maps/empty.fdf";
 	double ***tab = str_arr_atoi(filepath);
 	t_data	img;
 	t_vars	vars;
@@ -54,6 +54,6 @@ int	main(int argc, char **argv)
 	double coordinates[3] = {5.0, 6.0 ,7.0};
 	// multiply_coordinates_by_matrix(coordinates, matrix);
 	double ***flat_tab = isometric_projection(tab);
-	draw_wireframe(flat_tab, &vars, &img);
-	renderer();
+	draw_wireframe(flat_tab, NULL, &img);
+	// renderer();
 }
