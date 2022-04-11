@@ -20,16 +20,28 @@ typedef struct	s_data {
 }				t_data;
 int	close_win(int keycode, t_vars *vars);
 
-# define ORIGIN_X 960
-# define ORIGIN_Y 540
+# define ORIGIN_X 0
+# define ORIGIN_Y 0
+
+// # define ORIGIN_X 260
+// # define ORIGIN_Y 540
+# define INIT_SCALE 10
+# define VERTICAL_SCALE 5
 // # define MARGIN_SIDE 240
 // # define MARGIN_TOP 90
 // # define 
 
 # define PI 3.1415926535
-float *multiply_coordinates_by_matrix(const float coordinates[3], const float matrix[3][3]);
-double ***str_arr_atoi(char *filepath);
-
+# define ALPHA 0.615472907
+# define BETA (PI / 4)
+double	*multiply_coordinates_by_matrix(double coordinates[3], double matrix[3][3]);
+double 	***str_arr_atoi(char *filepath);
+void	draw_straight_line(t_data *data, double *a, double *b, int color);
+void 	draw_rotated_square(t_data *data, int *a, int size, int color);
+void	draw_square(t_data *data, int *a, int size, int color);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+double 	***isometric_projection(double ***tab);
+void 	draw_wireframe(double ***tab, t_vars *vars, t_data *data);
 
 
 #endif
