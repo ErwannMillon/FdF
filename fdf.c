@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 	int	file;
 
 	// file = open("./test_maps/42.fdf", O_RDONLY);
-	char *filepath = "./test_maps/empty.fdf";
+	char *filepath = "./test_maps/42.fdf";
 	double ***tab = str_arr_atoi(filepath);
 	t_data	img;
 	t_vars	vars;

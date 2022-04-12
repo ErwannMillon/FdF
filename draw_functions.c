@@ -74,9 +74,10 @@ void	draw_vertical_line(t_data *data, double *a, double *b, int color)
 	slope = -1;
 	if	(ay < by)
 		slope = 1;
+	printf("vertical: ax: %f, ay: %f, bx: %f, by: %f, \n", ax, ay, bx, by);
 	while (((int)ay != (int)by) && (ax < 1900 && ax > 100 && ay < 1000 && ay > 100))
 	{
-		printf("ax: %f, ay: %f, bx: %f, by: %f, \n", ax, ay, bx, by);
+		// printf("vertical: ax: %f, ay: %f, bx: %f, by: %f, \n", ax, ay, bx, by);
 		my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
 		if (ax < bx)
 			ax++;
@@ -93,24 +94,45 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 	double	bx = b[0] + ORIGIN_X;
 	double	by = b[1] + ORIGIN_Y;
 	float	slope;
-	printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", ax, ay, bx, by, slope );
 	if (bx == ax)
 		draw_vertical_line(data, a, b, color);
 	else
 	{
+		slope = (by - ay) / (bx - ax);
+		printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", ax, ay, bx, by, slope );
 		while (((int)ax != (int)bx) && ((int)ay != (int)by) && (ax < 1900 && ax > 100 && ay < 1000 && ay > 100))
 		{
-			printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", ax, ay, bx, by, slope);
+			// printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", ax, ay, bx, by, slope);
 			my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
 			if (ax < bx)
 				ax++;
 			else
 				ax--;
-			ay += slope;
+			
+			ay += fabs(slope);
 		}
 	}
 	
 
+}
+
+void draw_rows(double ***tab, t_data *img)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (tab[i])
+	{
+		j = 0;
+		while (tab[i][j + 1])
+		{
+			draw_straight_line(img, tab[i][j], tab[i][j + 1], 0x0000FF00);
+			j++;
+		}
+		i++;
+	}
 }
 
 void draw_wireframe(double ***tab, t_vars *varss, t_data *data)
@@ -129,30 +151,31 @@ void draw_wireframe(double ***tab, t_vars *varss, t_data *data)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
  	i = 0;
 	j = 0;
-	while (tab[i + 1])
-	{
-		j = 0;
-		while (tab[i][j + 1])
-		{
-			draw_straight_line(&img, tab[i][j], tab[i][j + 1], 0x0000FF00);
-			// draw_straight_line(&img, tab[i][j], tab[i + 1][j], 0x0000FF00);
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	// while (tab[i + i])
+	mlx_hook(vars.win, 2, 1L<<0, close_win, &vars);
+	draw_rows(tab, &img);
+	// while (tab[i])
 	// {
 	// 	j = 0;
 	// 	while (tab[i][j + 1])
 	// 	{
-	// 		draw_straight_line(&img, tab[i][j], tab[i][j+1], 0x0000FF00);
+	// 		draw_straight_line(&img, tab[i][j], tab[i][j + 1], 0x0000FF00);
 	// 		j++;
 	// 	}
 	// 	i++;
 	// }
-	// draw_straight_line(&img, tab[i][j], tab[i][j+1], 0x0000FF00);
-	// draw_square(&img, a, 200, 0x00FF0000);
+	// i = 0;
+
+	while (tab[i + 1])
+	{
+		j = 0;
+		while (tab[i][j])
+		{
+			draw_straight_line(&img, tab[i][j], tab[i + 1][j], 0x0000FF00);
+			j++;
+		}
+		i++;
+	}
+
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_loop(vars.mlx);
 
