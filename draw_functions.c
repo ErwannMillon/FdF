@@ -32,38 +32,6 @@ void	draw_square(t_data *data, int *a, int size, int color)
 	}
 }
 
-
-void draw_rotated_square(t_data *data, int *a, int size, int color)
-{
-	double x = a[0];
-	double y = a[1];
-	double angle = PI / 4;
-	int x_counter = 0;
-	int y_counter = 0;
-
-	double x_cop = x;
-	double x_rot = 0;
-	double y_rot = 0;
-
-	printf("rotx: %lf, roty: %lf\n", x_rot, y_rot);
-
-	while (y_counter < size)
-	{
-		x = x_cop;
-		x_counter = 0;
-		while (x_counter < size)
-		{
-			x_rot = (cos(angle) * x) - (sin(angle) * y);
-			y_rot = (sin(angle) * x) + (cos(angle) * y);
-			printf("ax: %lf, ay: %lf\n", x_rot, y_rot);
-			my_mlx_pixel_put(data, (int)x_rot - ORIGIN_X, (int)y_rot - ORIGIN_Y, color);
-			x++;
-			x_counter++;
-		}
-		y++;
-		y_counter++;
-	}
-}
 void	draw_vertical_line(t_data *data, double *a, double *b, int color)
 {
 	double	ax = a[0] + ORIGIN_X;
@@ -93,6 +61,7 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 	double	ay = a[1] + ORIGIN_Y;
 	double	bx = b[0] + ORIGIN_X;
 	double	by = b[1] + ORIGIN_Y;
+	// int		test[2];
 	float	slope;
 	if (bx == ax)
 		draw_vertical_line(data, a, b, color);
@@ -108,9 +77,14 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 				ax++;
 			else
 				ax--;
-			
-			ay += fabs(slope);
+			if (ay < by)
+				ay += fabs(slope);
+			else
+				ay += slope;
 		}
+		// test[0] = ax;
+		// test[1] = ay;
+		// draw_square(data, test, 10, 0x00FF0000);
 	}
 	
 
@@ -135,48 +109,64 @@ void draw_rows(double ***tab, t_data *img)
 	}
 }
 
-void draw_wireframe(double ***tab, t_vars *varss, t_data *data)
+void draw_cols(double ***tab, t_data *img)
 {
 	int	i;
 	int	j;
-	int	k;
-	double *result;
-	double a[2] = {0, 100};
-	t_data	img;
-	t_vars	vars;
-
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(vars.mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
- 	i = 0;
+	i = 0;
 	j = 0;
-	mlx_hook(vars.win, 2, 1L<<0, close_win, &vars);
-	draw_rows(tab, &img);
-	// while (tab[i])
-	// {
-	// 	j = 0;
-	// 	while (tab[i][j + 1])
-	// 	{
-	// 		draw_straight_line(&img, tab[i][j], tab[i][j + 1], 0x0000FF00);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// i = 0;
-
 	while (tab[i + 1])
 	{
 		j = 0;
 		while (tab[i][j])
 		{
-			draw_straight_line(&img, tab[i][j], tab[i + 1][j], 0x0000FF00);
+			draw_straight_line(img, tab[i][j], tab[i + 1][j], 0x0000FF00);
 			j++;
 		}
 		i++;
 	}
+}
+void mouse_hook(int button,int x,int y, t_frame *frame)
+{
+	// if (button = 1)
+	// {
+	// 	double translate[3][3] = {{x, y, 0.0}, {x, y, 0.0}, {x, y, 0.0}};
+	// 	frame->tab = multiply_arr_by_matrix(frame->tab, translate);
+	// 	draw_rows(frame->tab, frame->img);
+	// 	draw_cols(frame->tab, frame->img);
+	// 	mlx_put_image_to_window(frame->vars->mlx, frame->vars->win, frame->img->img, 0, 0);
+	// 	return (1);
+	// }
 
+
+}
+int	render_next_frame(t_frame *frame)
+{
+	draw_rows(frame->tab, frame->img);
+	draw_cols(frame->tab, frame->img);
+	mlx_put_image_to_window(frame->vars->mlx, frame->vars->win, frame->img->img, 0, 0);
+	return (1);
+}
+void draw_wireframe(double ***tab, t_vars *varss, t_data *data)
+{
+	double *result;
+	t_data	img;
+	t_vars	vars;
+	t_frame frame;
+
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "Hello world!");
+	img.img = mlx_new_image(vars.mlx, 1920, 1080);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	mlx_hook(vars.win, 2, 1L<<0, close_win, &vars);
+	draw_rows(tab, &img);
+	draw_cols(tab, &img);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+	frame.img = &img;
+	frame.tab = tab;
+	frame.vars = &vars;
+	mlx_mouse_hook(vars.win, mouse_hook, &vars);
+	mlx_loop_hook(vars.mlx, render_next_frame, &frame);
 	mlx_loop(vars.mlx);
 
 }

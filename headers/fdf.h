@@ -18,6 +18,14 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 }				t_data;
+
+typedef struct	s_frame
+{
+	double	***tab;
+	t_data	*img;
+	t_vars	*vars;
+}				t_frame;
+
 int	close_win(int keycode, t_vars *vars);
 
 # define ORIGIN_X 200
@@ -43,6 +51,8 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 double 	***isometric_projection(double ***tab);
 void 	draw_wireframe(double ***tab, t_vars *varss, t_data *data);
 void 	print_tab(double ***tab);
+double ***multiply_arr_by_matrix(double ***tab, double matrix[3][3]);
+double ***flatten(double ***tab);
 
 
 #endif
