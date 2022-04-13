@@ -54,18 +54,19 @@ void print_tab(double ***tab)
 	int	j;
 	i = 0;
 
-	while (tab[i])
+	while (tab[i] && i == 0)
 	{
 		j = 0;
 		while (tab[i][j])
 		{
-			// printf("i: %d index: %d, arr[%d, %d, %d]\n", i, j, (int)tab[i][j][0], (int)tab[i][j][1], (int)tab[i][j][2]);
+			printf("i: %d index: %d, arr[%d, %d, %d]\n", i, j, (int)tab[i][j][0], (int)tab[i][j][1], (int)tab[i][j][2]);
 			// printf("(%d, %d)\n", (int)tab[i][j][0], (int)tab[i][j][1]);
 			j++;
 		}
 		printf("\n");
 		i++;
 	}
+	printf("=======================================================");
 }
 
 void draw_tab(int ***tab)
@@ -93,9 +94,10 @@ double ***isometric_projection(double ***tab)
 	double secondiso[3][3] = {{1.0, 0.0, 0.0}, {0.0, cos(ALPHA), sin(ALPHA)},{0.0, (-1 * sin(ALPHA)), cos(ALPHA)}};
 	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	tab = multiply_arr_by_matrix(multiply_arr_by_matrix(tab, firstiso), secondiso);
-	double ***projected_tab = multiply_arr_by_matrix(tab, flatten);
-	printf("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-	// draw_tab(projected_tab);
-	print_tab(projected_tab);
-	return (projected_tab);
+	// double ***projected_tab = multiply_arr_by_matrix(tab, flatten);
+	// printf("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+	// // draw_tab(projected_tab);
+	// print_tab(projected_tab);
+	// return (projected_tab);
+	return (tab);
 }

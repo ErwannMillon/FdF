@@ -70,8 +70,8 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 		while (results[j] && results[j][0] != '\n')
 		{
 			arr[i][j] = malloc(4 * sizeof(double));
-			arr[i][j][0] = j * INIT_SCALE;
-			arr[i][j][1] = i * INIT_SCALE;
+			arr[i][j][0] = (j * INIT_SCALE);
+			arr[i][j][1] = (i * INIT_SCALE);
 			arr[i][j][2] = ft_atoi(results[j]) * (INIT_SCALE / 7); 
 			// printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
 			j++;
@@ -83,6 +83,46 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 		line = get_next_line(file);
 	}
 	arr[i] = NULL;
+}
+
+double ***copy_int_arr(double ***arr)
+{
+	double	***newarr;
+	int	i;
+	int	j;
+	int linelen;
+	char	**results;
+	char	*line;
+
+	linelen = 0;
+	i = 0;
+	j = 0;
+	while(arr[i][linelen])
+		linelen++;
+	while (arr[i])
+		i++;
+	newarr = malloc((i + 1) * sizeof(double **));
+	i = 0;
+	while (arr[i])
+	{
+		newarr[i] = malloc((linelen + 2) * sizeof(double *));
+		j = 0;
+		while (arr[i][j])
+		{
+			newarr[i][j] = malloc(4 * sizeof(double));
+			// newarr[i][j] = ft_memcpy()
+			ft_memcpy(newarr[i][j], arr[i][j], (sizeof(double) * 3));
+			// newarr[i][j][0] = arr[i][j][0];
+			// newarr[i][j][1] = arr[i][j][1];
+			// newarr[i][j][2] = arr[i][j][2];
+			// printf("index: %d, arr[%f, %f, %f]\n", j, arr[i][j][0],arr[i][j][1],arr[i][j][2]);
+			j++;
+		}
+		newarr[i][j] = NULL;
+		i++;
+	}
+	newarr[i] = NULL;
+	return (newarr);
 }
 
 double ***str_arr_atoi(char *filepath)

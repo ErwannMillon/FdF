@@ -23,7 +23,7 @@ int renderer(void)
 	// draw_square(&img, a, 200, 0x0000FF00);
 	// draw_rotated_square(&img, a, 200, red);
 	// draw_straight_line(&img, a, b, 0x00FF0000);
-	draw_square(&img, a, 200, 0x00FF0000);
+	// draw_square(&img, a, 200, 0x00FF0000);
 	// draw_rotated_square(&img, a, 40, red);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_loop(vars.mlx);
@@ -42,7 +42,7 @@ int	main(int argc, char **argv)
 	// file = open("./test_maps/42.fdf", O_RDONLY);
 	char *filepath = "./test_maps/42.fdf";
 	double ***tab = str_arr_atoi(filepath);
-	
+	double ***xyztab = str_arr_atoi(filepath);
 	t_data	img;
 	t_vars	vars;
 
@@ -51,10 +51,12 @@ int	main(int argc, char **argv)
 	img.img = mlx_new_image(vars.mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-	double matrix[3][3] = {{1.0, 2.0 ,3.0},{4.0, 0.0, 3.0},{1.0, 9.0, 11.0}};
-	double coordinates[3] = {5.0, 6.0 ,7.0};
+	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	// multiply_coordinates_by_matrix(coordinates, matrix);
-	double ***flat_tab = isometric_projection(tab);
-	draw_wireframe(flat_tab, NULL, &img);
+	double ***isotab = isometric_projection(tab);
+	double ***flat_tab = multiply_arr_by_matrix(tab, flatten);
+	// print_tab(flat_tab);
+	translate(flat_tab, 200, -500);
+	draw_wireframe(flat_tab, xyztab, &img);
 	// renderer();
 }
