@@ -6,13 +6,13 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:40 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:10:45 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 01:31:18 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void main_mouse_hook(int button, int x, int y, t_vars *frame)
+void zoom_mouse_hook(int button, int x, int y, t_vars *frame)
 {
 	if (button == 4 || button == 5)
 		zoom(button, x, y, frame);
@@ -22,7 +22,6 @@ void main_mouse_hook(int button, int x, int y, t_vars *frame)
 void translate_hook(int keycode, t_vars *frame)
 {
 	const int move = 10;
-	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	if (keycode == 53)
 		close_win(keycode, frame);
 	if (keycode == UP)
@@ -33,8 +32,8 @@ void translate_hook(int keycode, t_vars *frame)
 		translate(frame->xyztab, -move, 0);
 	if (keycode == RIGHT)
 		translate(frame->xyztab, move, 0);
-	frame->flattab = multiply_arr_by_matrix(isometric_projection(copy_int_arr(frame->xyztab)), flatten);
-	// frame->xyztab = twod_to_three(frame->flattab);
+	free_triple_arr(frame->flattab);
+	frame->flattab = flatten_arr(frame->xyztab);
 }
 
 void key_rotate(int keycode, t_vars *frame)
@@ -61,7 +60,8 @@ void key_rotate(int keycode, t_vars *frame)
 	if (keycode == W || keycode == S)
 		frame->xyztab = multiply_arr_by_matrix(frame->xyztab, rotate_x_matrix);
 	translate(frame->xyztab, x_scale, y_scale);
-	frame->flattab = multiply_arr_by_matrix(isometric_projection(copy_int_arr(frame->xyztab)), flatten);
+	free_triple_arr(frame->flattab);
+	frame->flattab = flatten_arr(frame->xyztab);
 }
 
 int	key_hook(int keycode, t_vars *frame)
@@ -77,11 +77,13 @@ int	key_hook(int keycode, t_vars *frame)
 	if (keycode == 78)
 	{
 		scale_z(frame->xyztab, 0.6);
+		free_triple_arr(frame->flattab);
 		frame->flattab = flatten_arr(frame->xyztab);
 	}
 	if (keycode == 69)
 	{
 		scale_z(frame->xyztab, 1.2);
+		free_triple_arr(frame->flattab);
 		frame->flattab = flatten_arr(frame->xyztab);
 	}
 }

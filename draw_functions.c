@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:30 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 00:51:18 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 01:18:09 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void draw_wireframe(double ***tab, double ***xyztab, t_data *data)
 	vars.img = &img;
 	vars.flattab = tab;
 	vars.xyztab = xyztab;
-	mlx_mouse_hook(vars.win, main_mouse_hook, &vars);
+	mlx_mouse_hook(vars.win, zoom_mouse_hook, &vars);
 	mlx_hook(vars.win, 2, 0, key_hook, &vars);
 	mlx_loop_hook(vars.mlx, render_next_frame, &vars);
 	mlx_loop(vars.mlx);

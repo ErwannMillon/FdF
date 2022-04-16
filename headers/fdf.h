@@ -84,6 +84,8 @@ void	scale_z(double ***arr, double scale);
 //HOOKS
 void	translate_hook(int keycode, t_vars *frame);
 int		key_hook(int keycode, t_vars *frame);
+void	zoom_mouse_hook(int button, int x, int y, t_vars *frame);
+
 // void	mouse_hook(int x,int y, t_vars *frame);
 
 //MATRIX OPERATIONS AND PARSING
@@ -95,12 +97,15 @@ double 	***str_arr_atoi(char *filepath);
 
 //FREEING
 void 	free_split(char **strs);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void 	print_tab(double ***tab);
+void	free_triple_arr(double ***arr);
 
+//ARRAY UTILS
+void 	print_tab(double ***tab);
 double	***copy_int_arr(double ***arr);
+// double 	***twod_to_three(double ***tab);
+
+//MLX STUFF
 int		render_next_frame(t_vars *frame);
-void main_mouse_hook(int button, int x, int y, t_vars *frame);
-double 	***twod_to_three(double ***tab);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif
