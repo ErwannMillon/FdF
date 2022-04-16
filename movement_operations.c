@@ -1,20 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement_operations.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/17 00:05:52 by gmillon           #+#    #+#             */
+/*   Updated: 2022/04/17 00:16:41 by gmillon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void rotate(double ***tab, int x, int y)
+int	tab_height(double ***tab)
 {
-	// double ***test;
-	// double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
-	// double angle = 0.872665;
-	// double rotate_matrix[3][3] =  {{1, 0, 0},
-	// 								{0.0, cos(angle), -sin(angle)}, 
-	// 								{0.0, cos(angle), -sin(angle)}};
-	// // double rotate_matrix[3][3] =  {{cos(angle), (-1 * sin(angle)), 0.0}, {sin(angle), cos(angle), 0.0}, {0.0, 0.0, 1.0}};
-	// multiply_arr_by_matrix(, rotate_matrix);
-	// multiply_arr_by_matrix(tab, flatten);
+	int	i;
+
+	i = 0;
+	while(tab[i])
+		i++;
+	return (i);
+}
+
+
+int	tab_width(double ***tab)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while(tab[0][j])
+		j++;
+	return (j);
 }
 
 void zoom(int button, int x,int y, t_vars *frame)
 {
+	printf("a;fjakls;;");
 	int		i;
 	int		j;
 	double	***arr;
@@ -33,7 +56,7 @@ void zoom(int button, int x,int y, t_vars *frame)
 	while (arr[i] && (button == 4 || button == 5))
 	{
 		j = 0;
-		while (arr[i][j] && (button == 4 || button == 5))
+		while (arr[i][j] && (button == 4 || button == 5) && scale <= 20 && scale >= 0.05)
 		{
 			arr[i][j][0] *= scale;
 			arr[i][j][1] *= scale;
@@ -49,12 +72,11 @@ void zoom(int button, int x,int y, t_vars *frame)
 
 void	translate(double ***tab, int x, int y)
 {
-	static float oldposx = 0;
-	static float oldposy = 0;
+
+
 	int	i;
 	int	j;
-	// printf("oldposx: %d, oldposy: %d, x: %d, y: %d", oldposx, oldposy, x, y);
-	if (oldposx && oldposy)
+	if (1)
 	{
 		i = 0;
 		while (tab[i])
@@ -62,13 +84,13 @@ void	translate(double ***tab, int x, int y)
 			j = 0;
 			while (tab[i][j])
 			{
-				tab[i][j][0] += ((ORIGIN_X - x) * fabs((x / oldposx)) / 5);
-				tab[i][j][1] += ((ORIGIN_Y - y) * fabs((y / oldposy)) / 5);
+				// if (tab[0][0][0] + ORIGIN_X > 1 && tab[0][tab_width(tab) - 1][0] + ORIGIN_X < 1899)
+				tab[i][j][0] += x;
+				// if (tab[tab_height(tab) -1][0][1] > 1 && tab[tab_height(tab) -1][0][1] < 1079)
+				tab[i][j][1] += y;
 				j++;
 			}
 			i++;
 		}
 	}
-	oldposx = x;
-	oldposy = y;
 }

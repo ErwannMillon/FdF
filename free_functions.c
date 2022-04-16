@@ -1,13 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_functions.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/17 00:05:23 by gmillon           #+#    #+#             */
+/*   Updated: 2022/04/17 00:14:07 by gmillon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 void free_split(char **strs)
 {
-	while(*strs)
+	int	i;
+
+	i = 0;
+	while(strs[i])
 	{
-		free(*strs);
-		strs++;
+		free(strs[i]);
+		i++;
 	}
 	free(strs);
 }
+
 void	free_triple_float(float ***arr)
 {
 	int	i;
