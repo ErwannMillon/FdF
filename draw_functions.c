@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:30 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 02:22:22 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 22:15:37 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	draw_square(t_data *data, int size, int color)
 	}
 }
 
-void	draw_vertical_line(t_data *data, double *a, double *b, int color)
+void	draw_vertical_line(t_data *data, float *a, float *b, int color)
 {
-	double	ax = a[0] + ORIGIN_X;
-	double	ay = a[1] + ORIGIN_Y;
-	double	bx = b[0] + ORIGIN_X;
-	double	by = b[1] + ORIGIN_Y;
+	float	ax = a[0] + ORIGIN_X;
+	float	ay = a[1] + ORIGIN_Y;
+	float	bx = b[0] + ORIGIN_X;
+	float	by = b[1] + ORIGIN_Y;
 	int	slope;
 	slope = -1;
 	if	(ay < by)
@@ -67,12 +67,12 @@ void	draw_vertical_line(t_data *data, double *a, double *b, int color)
 	}
 }
 
-void	draw_straight_line(t_data *data, double *a, double *b, int color)
+void	draw_straight_line(t_data *data, float *a, float *b, int color)
 {
-	double	ax = a[0] + ORIGIN_X;
-	double	ay = a[1] + ORIGIN_Y;
-	double	bx = b[0] + ORIGIN_X;
-	double	by = b[1] + ORIGIN_Y;
+	float	ax = a[0] + ORIGIN_X;
+	float	ay = a[1] + ORIGIN_Y;
+	float	bx = b[0] + ORIGIN_X;
+	float	by = b[1] + ORIGIN_Y;
 	// int		test[2];
 	float	slope;
 	if (bx == ax)
@@ -80,10 +80,8 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 	else
 	{
 		slope = (by - ay) / (bx - ax);
-		// printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", floor(10*ax)/10, floor(10*ay)/10, bx, by, slope );
 		while ((int)ax != (int)bx && (int)ay != (int)by && (ax < 1919 && ax > 1 && ay < 1079 && ay > 1))
 		{
-			// printf("ax: %f, ay: %f, bx: %f, by: %f, slope: %f\n", floor(10*ax)/10, floor(10*ay)/10, floor(10*bx)/10, floor(10*by)/10, slope );
 			my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
 			if (ax < bx)
 				ax += 0.25;
@@ -100,48 +98,89 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 	}
 }
 
-void draw_rows(double ***tab, t_data *img, double color)
+float	abs_slope(float *a, float *b)
 {
-	int	i;
-	int	j;
+	float	slope;
+	
+	slope = 1000;
+	if (b[0] - a[0] != 0)
+		slope = fabs((b[1] - a[1]) / (b[0] - a[0]));
+	return (floor(slope * 100) / 100);
+}
 
+void draw_rows(float ***tab, t_data *img, float color)
+{
+	int		i;
+	int		j;
+	float	slope;
+	float	*linestart;
+	
 	i = 0;
 	j = 0;
 	while (tab[i])
 	{
 		j = 0;
+		slope = abs_slope(tab[i][j], tab[i][j + 1]);
+		linestart = tab[i][j];
 		while (tab[i][j + 1])
 		{
-			draw_straight_line(img, tab[i][j], tab[i][j + 1], color);
-			draw_straight_line(img, tab[i][j + 1], tab[i][j], color);
+			if (slope != abs_slope(tab[i][j], tab[i][j + 1]))
+			{
+				// printf("drawing: slope = %f, calcul : %f coordinates (%d, %d) \n ", slope, abs_slope(tab[i][j], tab[i][j + 1]), i, j);
+				draw_straight_line(img, linestart, tab[i][j], color);
+				draw_straight_line(img, tab[i][j], linestart, color);
+				linestart = tab[i][j];
+				slope = abs_slope(tab[i][j], tab[i][j + 1]);
+			}
+			// draw_straight_line(img, tab[i][j + 1], tab[i][j], color);
 			j++;
 		}
+		draw_straight_line(img, linestart, tab[i][j], color);
+		draw_straight_line(img, tab[i][j], linestart, color);
 		i++;
 	}
 }
 
-void draw_cols(double ***tab, t_data *img, double color)
+void draw_cols(float ***tab, t_data *img, float color)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	float	slope;
+	float	oldslope;
+	float	*linestart;
+
 	i = 0;
 	j = 0;
-	while (tab[i] && tab[i + 1])
+	
+	while (tab[i][j])
 	{
-		j = 0;
-		while (tab[i][j])
+		i = 0;
+		slope = abs_slope(tab[i][j], tab[i + 1][j]);
+		linestart = tab[i][j];
+		while (tab[i + 1] && tab[i][j] && tab[i + 1][j])
 		{
-			draw_straight_line(img, tab[i][j], tab[i + 1][j], color);
-			draw_straight_line(img, tab[i + 1][j], tab[i][j], color);
-			j++;
+			if (slope != abs_slope(tab[i][j], tab[i + 1][j]))
+			{
+				// printf("drawing: slope = %f, calcul : %f coordinates (%d, %d) \n ", slope, abs_slope(tab[i][j], tab[i + 1][j]), i, j);
+				draw_straight_line(img, linestart, tab[i][j], color);
+				draw_straight_line(img, tab[i][j], linestart, color);
+				linestart = tab[i][j];
+				slope = abs_slope(tab[i][j], tab[i + 1][j]);
+			}
+			i++;
 		}
-		i++;
+		if (slope == abs_slope(linestart, tab[i][j]))
+		{
+			draw_straight_line(img, linestart, tab[i][j], color);
+			draw_straight_line(img, tab[i][j], linestart, color);
+		}
+		j++;
 	}
 }
 
-void draw_wireframe(double ***tab, double ***xyztab, t_data *data)
+void draw_wireframe(float ***tab, float ***xyztab, t_data *data)
 {
-	double *result;
+	float *result;
 	t_data	img;
 	t_vars	vars;
 	t_frame frame;
@@ -162,6 +201,7 @@ void draw_wireframe(double ***tab, double ***xyztab, t_data *data)
 	vars.xyztab = xyztab;
 	vars.color = 0x0000FF00;
 	vars.disco = 0;
+	vars.framenum = 0;
 	mlx_mouse_hook(vars.win, zoom_mouse_hook, &vars);
 	mlx_hook(vars.win, 2, 0, key_hook, &vars);
 	mlx_loop_hook(vars.mlx, render_next_frame, &vars);

@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:34 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 19:15:47 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 19:36:31 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int renderer(void)
 	t_data	img;
 	// t_data	img2;
 	// int red = 0x00FF0000;
-	double a[2] = {0, 0};
-	double b[2] = {200, 100};
+	float a[2] = {0, 0};
+	float b[2] = {200, 100};
 	t_vars	vars;
 
 	vars.mlx = mlx_init();
@@ -44,8 +44,8 @@ int	main(int argc, char **argv)
 
 	// file = open("./test_maps/42.fdf", O_RDONLY);
 	char *filepath = argv[1];
-	double ***tab = str_arr_atoi(filepath);
-	double ***xyztab = copy_int_arr(tab);
+	float ***tab = str_arr_atoi(filepath);
+	float ***xyztab = copy_int_arr(tab);
 	t_data	img;
 	t_vars	vars;
 
@@ -54,10 +54,10 @@ int	main(int argc, char **argv)
 	img.img = mlx_new_image(vars.mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
+	float flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	// multiply_coordinates_by_matrix(coordinates, matrix);
-	double ***isotab = isometric_projection(tab);
-	double ***flat_tab = multiply_arr_by_matrix(tab, flatten);
+	float ***isotab = isometric_projection(tab);
+	float ***flat_tab = multiply_arr_by_matrix(tab, flatten);
 	// print_tab(flat_tab);
 	
 	// translate(xyztab, xyz -900);

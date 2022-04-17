@@ -29,18 +29,19 @@ typedef struct	s_data {
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
-	double	***flattab;
-	double	***xyztab;
+	float	***flattab;
+	float	***xyztab;
 	t_data	*img;
-	double	color;
+	float	color;
 	int disco;
+	int framenum;
 
 }				t_vars;
 
 typedef struct	s_frame
 {
-	double	***flattab;
-	double	***xyztab;
+	float	***flattab;
+	float	***xyztab;
 	t_data	*img;
 	t_vars	*vars;
 }				t_frame;
@@ -65,23 +66,23 @@ int	close_win(int keycode, t_vars *vars);
 
 //DRAW_FUNCTIONS
 void 	draw_rotated_square(t_data *data, int *a, int size, int color);
-void	draw_straight_line(t_data *data, double *a, double *b, int color);
-void 	draw_wireframe(double ***tab, double ***xyztab, t_data *data);
+void	draw_straight_line(t_data *data, float *a, float *b, int color);
+void 	draw_wireframe(float ***tab, float ***xyztab, t_data *data);
 void	draw_square(t_data *data, int size, int color);
-void 	draw_rows(double ***tab, t_data *img, double color);
-void 	draw_cols(double ***tab, t_data *img, double color);
+void 	draw_rows(float ***tab, t_data *img, float color);
+void 	draw_cols(float ***tab, t_data *img, float color);
 
 //MEASUREMENTS
-int	tab_height(double ***tab);
-int	tab_width(double ***tab);
+int	tab_height(float ***tab);
+int	tab_width(float ***tab);
 
 //MOVEMENT AND TRANSFORMATIONS
-double 	***isometric_projection(double ***tab);
-double	***flatten_arr(double ***tab);
-void	translate(double ***tab, int x, int y);
+float 	***isometric_projection(float ***tab);
+float	***flatten_arr(float ***tab);
+void	translate(float ***tab, int x, int y);
 void 	zoom(int button, int x,int y, t_vars *frame);
 void 	key_rotate(int keycode, t_vars *frame);
-void	scale_z(double ***arr, double scale);
+void	scale_z(float ***arr, float scale);
 
 //HOOKS
 void	translate_hook(int keycode, t_vars *frame);
@@ -91,20 +92,20 @@ void	zoom_mouse_hook(int button, int x, int y, t_vars *frame);
 // void	mouse_hook(int x,int y, t_vars *frame);
 
 //MATRIX OPERATIONS AND PARSING
-double	*multiply_coordinates_by_matrix(double coordinates[3], double matrix[3][3]);
-double	***multiply_arr_by_matrix(double ***tab, double matrix[3][3]);
-double 	***str_arr_atoi(char *filepath);
+float	*multiply_coordinates_by_matrix(float coordinates[3], float matrix[3][3]);
+float	***multiply_arr_by_matrix(float ***tab, float matrix[3][3]);
+float 	***str_arr_atoi(char *filepath);
 
-// double ***rotate_arr_by_matrix(double ***tab, double matrix[3][3]);
+// float ***rotate_arr_by_matrix(float ***tab, float matrix[3][3]);
 
 //FREEING
 void 	free_split(char **strs);
-void	free_triple_arr(double ***arr);
+void	free_triple_arr(float ***arr);
 
 //ARRAY UTILS
-void 	print_tab(double ***tab);
-double	***copy_int_arr(double ***arr);
-// double 	***twod_to_three(double ***tab);
+void 	print_tab(float ***tab);
+float	***copy_int_arr(float ***arr);
+// float 	***twod_to_three(float ***tab);
 
 //MLX STUFF
 int		render_next_frame(t_vars *frame);

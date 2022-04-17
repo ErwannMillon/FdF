@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:17 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:21:25 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 21:25:09 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ float split_len(char *s)
 	return((float)i);
 }
 
-void z_min_max(double ***arr, double *min, double *max)
+void z_min_max(float ***arr, float *min, float *max)
 {
 	int	i;
 	int	j;
@@ -104,11 +104,11 @@ void z_min_max(double ***arr, double *min, double *max)
 	}
 }
 
-void scale_z(double ***arr, double scale)
+void scale_z(float ***arr, float scale)
 {
-	double	min;
-	double	max;
-	double z_scale;
+	float	min;
+	float	max;
+	float z_scale;
 	int		i;
 	int		j;
 
@@ -132,9 +132,9 @@ void scale_z(double ***arr, double scale)
 	}
 }
 
-void fill_int_arr(double ****arr_pointer, int file, int linelen)
+void fill_int_arr(float ****arr_pointer, int file, int linelen)
 {
-	double	***arr;
+	float	***arr;
 	int		i;
 	int		j;
 	char	**results;
@@ -149,14 +149,14 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 	i = 0;
 	while (line)
 	{
-		arr[i] = malloc((linelen + 2) * sizeof(double *));
+		arr[i] = malloc((linelen + 2) * sizeof(float *));
 		// printf("line %d: %s   ___\n", i + 1, line);
 		results = ft_split(line, ' ');
 		// print_split(results);
 		j = 0;
 		while (results[j] && results[j][0] != '\n')
 		{
-			arr[i][j] = malloc(4 * sizeof(double));
+			arr[i][j] = malloc(4 * sizeof(float));
 			arr[i][j][0] = (j * scale);
 			arr[i][j][1] = (i * scale);
 			arr[i][j][2] = ft_atoi(results[j]); 
@@ -174,9 +174,9 @@ void fill_int_arr(double ****arr_pointer, int file, int linelen)
 	scale_z(arr, 1);
 }
 
-double ***copy_int_arr(double ***arr)
+float ***copy_int_arr(float ***arr)
 {
-	double	***newarr;
+	float	***newarr;
 	int	i;
 	int	j;
 	int linelen;
@@ -190,16 +190,16 @@ double ***copy_int_arr(double ***arr)
 		linelen++;
 	while (arr[i])
 		i++;
-	newarr = malloc((i + 1) * sizeof(double **));
+	newarr = malloc((i + 1) * sizeof(float **));
 	i = 0;
 	while (arr[i])
 	{
-		newarr[i] = malloc((linelen + 2) * sizeof(double *));
+		newarr[i] = malloc((linelen + 2) * sizeof(float *));
 		j = 0;
 		while (arr[i][j])
 		{
-			newarr[i][j] = malloc(4 * sizeof(double));
-			ft_memcpy(newarr[i][j], arr[i][j], (sizeof(double) * 3));
+			newarr[i][j] = malloc(4 * sizeof(float));
+			ft_memcpy(newarr[i][j], arr[i][j], (sizeof(float) * 3));
 			j++;
 		}
 		newarr[i][j] = NULL;
@@ -209,17 +209,17 @@ double ***copy_int_arr(double ***arr)
 	return (newarr);
 }
 
-double ***str_arr_atoi(char *filepath)
+float ***str_arr_atoi(char *filepath)
 {
 	int		arr_len;
 	int		line_len;
-	double	***atoi_tab;
+	float	***atoi_tab;
 	char	**str_arr;
 	int		file;
 
 	line_len = line_length(filepath);
 	arr_len = arr_length(filepath);
-	atoi_tab = malloc((arr_len + 1) * sizeof (double **));
+	atoi_tab = malloc((arr_len + 1) * sizeof (float **));
 	file = open(filepath, O_RDONLY);
 	fill_int_arr(&atoi_tab, file, line_len);
 	if (!atoi_tab || !*atoi_tab)

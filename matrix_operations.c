@@ -6,18 +6,18 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:48 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:36:45 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 20:21:47 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-double *multiply_coordinates_by_matrix(double coordinates[3], double matrix[3][3])
+float *multiply_coordinates_by_matrix(float coordinates[3], float matrix[3][3])
 {
 	int	i;
 	int	j;
-	double	sum;
-	double	*result;
-	result = malloc(3 * sizeof(double));
+	float	sum;
+	float	*result;
+	result = malloc(3 * sizeof(float));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -37,12 +37,12 @@ double *multiply_coordinates_by_matrix(double coordinates[3], double matrix[3][3
 	return (result);
 }
 
-double ***multiply_arr_by_matrix(double ***tab, double matrix[3][3])
+float ***multiply_arr_by_matrix(float ***tab, float matrix[3][3])
 {
 	int	i;
 	int	j;
 	int	k;
-	double *result;
+	float *result;
 
 	i = 0;
 	while (tab[i])
@@ -60,15 +60,15 @@ double ***multiply_arr_by_matrix(double ***tab, double matrix[3][3])
 	return (tab);
 }
 
-double ***flatten_arr(double ***tab)
+float ***flatten_arr(float ***tab)
 {
-	double ***copy;
-	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
+	float ***copy;
+	float flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	copy = multiply_arr_by_matrix(isometric_projection(copy_int_arr(tab)), flatten);
 	return (copy);
 }
 
-void print_tab(double ***tab)
+void print_tab(float ***tab)
 {
 	int	i;
 	int	j;
@@ -89,12 +89,12 @@ void print_tab(double ***tab)
 	ft_printf("=======================================================");
 }
 
-double ***isometric_projection(double ***tab)
+float ***isometric_projection(float ***tab)
 {
 	// print_tab(tab);
-	double firstiso[3][3] = {{cos(BETA), 0.0, (-1 * sin(BETA))}, {0.0, 1.0, 0.0},{sin(BETA), 0.0, cos(BETA)}};
-	double secondiso[3][3] = {{1.0, 0.0, 0.0}, {0.0, cos(ALPHA), sin(ALPHA)},{0.0, (-1 * sin(ALPHA)), cos(ALPHA)}};
-	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
+	float firstiso[3][3] = {{cos(BETA), 0.0, (-1 * sin(BETA))}, {0.0, 1.0, 0.0},{sin(BETA), 0.0, cos(BETA)}};
+	float secondiso[3][3] = {{1.0, 0.0, 0.0}, {0.0, cos(ALPHA), sin(ALPHA)},{0.0, (-1 * sin(ALPHA)), cos(ALPHA)}};
+	float flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	tab = multiply_arr_by_matrix(multiply_arr_by_matrix(tab, firstiso), secondiso);
 	return (tab);
 }

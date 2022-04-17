@@ -6,13 +6,13 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:52 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:35:33 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 19:36:31 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	tab_height(double ***tab)
+int	tab_height(float ***tab)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ int	tab_height(double ***tab)
 }
 
 
-int	tab_width(double ***tab)
+int	tab_width(float ***tab)
 {
 	int	i;
 	int	j;
@@ -39,8 +39,8 @@ void zoom(int button, int x,int y, t_vars *frame)
 {
 	int		i;
 	int		j;
-	double	***arr;
-	double scale = 1;
+	float	***arr;
+	float scale = 1;
 	static int oldbutton = 0;
 	
 	// if (button != oldbutton)
@@ -70,7 +70,7 @@ void zoom(int button, int x,int y, t_vars *frame)
 	frame->flattab = flatten_arr(frame->xyztab);
 }
 
-void	translate(double ***tab, int x, int y)
+void	translate(float ***tab, int x, int y)
 {
 
 

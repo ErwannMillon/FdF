@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:23 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:18:40 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 19:36:31 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void free_split(char **strs)
 	free(strs);
 }
 
-void	free_triple_arr(double ***arr)
+void	free_triple_arr(float ***arr)
 {
 	int	i;
 	int	j;
