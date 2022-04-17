@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:48 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:29:34 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 01:36:45 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,60 +60,12 @@ double ***multiply_arr_by_matrix(double ***tab, double matrix[3][3])
 	return (tab);
 }
 
-double *rotate_coordinates_by_matrix(double coordinates[3], double matrix[3][3])
-{
-	int	i;
-	int	j;
-	double	sum;
-	double	*result;
-	result = malloc(3 * sizeof(double));
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < 3)
-	{
-		j = 0;
-		sum = 0;
-		while (j < 3)
-		{
-			sum += (coordinates[j] - 400) * matrix[i][j];
-			j++;
-		}
-		result[i] = sum;
-		// printf("i: %d, val: %f", i, result[i]);
-		i++;
-	}
-	return (result);
-}
-
 double ***flatten_arr(double ***tab)
 {
 	double ***copy;
 	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
 	copy = multiply_arr_by_matrix(isometric_projection(copy_int_arr(tab)), flatten);
 	return (copy);
-}
-double ***rotate_arr_by_matrix(double ***tab, double matrix[3][3])
-{
-	int	i;
-	int	j;
-	int	k;
-	double *result;
-
-	i = 0;
-	while (tab[i])
-	{
-		j = 0;
-		while (tab[i][j])
-		{
-			result = rotate_coordinates_by_matrix(tab[i][j], matrix);
-			// free(tab[i][j]);
-			tab[i][j] = result;
-			j++;
-		}
-		i++;
-	}
-	return (tab);
 }
 
 void print_tab(double ***tab)

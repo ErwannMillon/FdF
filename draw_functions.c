@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:30 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 01:18:09 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 02:22:22 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	draw_straight_line(t_data *data, double *a, double *b, int color)
 	}
 }
 
-void draw_rows(double ***tab, t_data *img)
+void draw_rows(double ***tab, t_data *img, double color)
 {
 	int	i;
 	int	j;
@@ -112,15 +112,15 @@ void draw_rows(double ***tab, t_data *img)
 		j = 0;
 		while (tab[i][j + 1])
 		{
-			draw_straight_line(img, tab[i][j], tab[i][j + 1], 0x0000FF00);
-			draw_straight_line(img, tab[i][j + 1], tab[i][j], 0x0000FF00);
+			draw_straight_line(img, tab[i][j], tab[i][j + 1], color);
+			draw_straight_line(img, tab[i][j + 1], tab[i][j], color);
 			j++;
 		}
 		i++;
 	}
 }
 
-void draw_cols(double ***tab, t_data *img)
+void draw_cols(double ***tab, t_data *img, double color)
 {
 	int	i;
 	int	j;
@@ -131,8 +131,8 @@ void draw_cols(double ***tab, t_data *img)
 		j = 0;
 		while (tab[i][j])
 		{
-			draw_straight_line(img, tab[i][j], tab[i + 1][j], 0x0000FF00);
-			draw_straight_line(img, tab[i + 1][j], tab[i][j], 0x0000FF00);
+			draw_straight_line(img, tab[i][j], tab[i + 1][j], color);
+			draw_straight_line(img, tab[i + 1][j], tab[i][j], color);
 			j++;
 		}
 		i++;
@@ -154,12 +154,14 @@ void draw_wireframe(double ***tab, double ***xyztab, t_data *data)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	translate(xyztab, 960 - x_middle, 540 - y_middle);
 	tab = flatten_arr(xyztab);
-	draw_rows(tab, &img);
-	draw_cols(tab, &img);
+	draw_rows(tab, &img, 0x000000FF);
+	draw_cols(tab, &img, 0x000000FF);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	vars.img = &img;
 	vars.flattab = tab;
 	vars.xyztab = xyztab;
+	vars.color = 0x0000FF00;
+	vars.disco = 0;
 	mlx_mouse_hook(vars.win, zoom_mouse_hook, &vars);
 	mlx_hook(vars.win, 2, 0, key_hook, &vars);
 	mlx_loop_hook(vars.mlx, render_next_frame, &vars);

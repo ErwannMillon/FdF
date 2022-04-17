@@ -32,6 +32,8 @@ typedef struct	s_vars {
 	double	***flattab;
 	double	***xyztab;
 	t_data	*img;
+	double	color;
+	int disco;
 
 }				t_vars;
 
@@ -66,8 +68,8 @@ void 	draw_rotated_square(t_data *data, int *a, int size, int color);
 void	draw_straight_line(t_data *data, double *a, double *b, int color);
 void 	draw_wireframe(double ***tab, double ***xyztab, t_data *data);
 void	draw_square(t_data *data, int size, int color);
-void 	draw_rows(double ***tab, t_data *img);
-void 	draw_cols(double ***tab, t_data *img);
+void 	draw_rows(double ***tab, t_data *img, double color);
+void 	draw_cols(double ***tab, t_data *img, double color);
 
 //MEASUREMENTS
 int	tab_height(double ***tab);

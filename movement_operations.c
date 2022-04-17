@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:52 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 00:16:41 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 01:35:33 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,14 @@ int	tab_width(double ***tab)
 
 void zoom(int button, int x,int y, t_vars *frame)
 {
-	printf("a;fjakls;;");
 	int		i;
 	int		j;
 	double	***arr;
-	static double scale = 1;
-	double flatten[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}};
+	double scale = 1;
 	static int oldbutton = 0;
-	if (button != oldbutton)
-		scale = 1;
+	
+	// if (button != oldbutton)
+	// 	scale = 1;
 	if (button == 4)
 		scale += 0.1;
 	if (button == 5)
@@ -67,7 +66,8 @@ void zoom(int button, int x,int y, t_vars *frame)
 		i++;
 	}
 	oldbutton = button;
-	frame->flattab = multiply_arr_by_matrix(isometric_projection(copy_int_arr(frame->xyztab)), flatten);
+	free_triple_arr(frame->flattab);
+	frame->flattab = flatten_arr(frame->xyztab);
 }
 
 void	translate(double ***tab, int x, int y)

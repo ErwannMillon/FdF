@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:34 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 00:06:25 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/04/17 19:15:47 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 	// file = open("./test_maps/42.fdf", O_RDONLY);
 	char *filepath = argv[1];
 	double ***tab = str_arr_atoi(filepath);
-	double ***xyztab = str_arr_atoi(filepath);
+	double ***xyztab = copy_int_arr(tab);
 	t_data	img;
 	t_vars	vars;
 

@@ -6,11 +6,11 @@ INCLUDEDIR = ./headers
 MLXFLAGS = -lmlx -framework OpenGL -framework AppKit
 ASAN = -fsanitize=address -g
 OBJS := $(SRCS:%.c=%.o)
-
+OPTIFLAGS = -Ofast -ffast-math
 #ADD CFLAGS!!!
 
 %.o: %.c
-	gcc -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
+	gcc $(OPTIFLAGS) -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
 all: $(NAME)
 $(NAME): libft $(OBJS)
 	$(CC) $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a
