@@ -23,6 +23,8 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	float	winheight;
+	float	winwidth;
 }				t_data;
 
 
@@ -35,7 +37,8 @@ typedef struct	s_vars {
 	float	color;
 	int disco;
 	int framenum;
-
+	float	winheight;
+	float	winwidth;
 }				t_vars;
 
 typedef struct	s_frame
@@ -44,13 +47,10 @@ typedef struct	s_frame
 	float	***xyztab;
 	t_data	*img;
 	t_vars	*vars;
+	float	winheight;
+	float	winwidth;
 }				t_frame;
 
-
-int	close_win(int keycode, t_vars *vars);
-
-// # define ORIGIN_X 200
-// # define ORIGIN_Y 200
 
 # define ORIGIN_X 200
 # define ORIGIN_Y 100
@@ -58,11 +58,10 @@ int	close_win(int keycode, t_vars *vars);
 # define VERTICAL_SCALE 5
 // # define MARGIN_SIDE 240
 // # define MARGIN_TOP 90
-// # define 
 
 # define PI 3.1415926535
 # define ALPHA 0.615472907
-# define BETA (PI / 4)
+# define BETA 0.785398
 
 //DRAW_FUNCTIONS
 void 	draw_rotated_square(t_data *data, int *a, int size, int color);
@@ -89,18 +88,15 @@ void	translate_hook(int keycode, t_vars *frame);
 int		key_hook(int keycode, t_vars *frame);
 void	zoom_mouse_hook(int button, int x, int y, t_vars *frame);
 
-// void	mouse_hook(int x,int y, t_vars *frame);
-
 //MATRIX OPERATIONS AND PARSING
 float	*multiply_coordinates_by_matrix(float coordinates[3], float matrix[3][3]);
 float	***multiply_arr_by_matrix(float ***tab, float matrix[3][3]);
 float 	***str_arr_atoi(char *filepath);
 
-// float ***rotate_arr_by_matrix(float ***tab, float matrix[3][3]);
-
 //FREEING
 void 	free_split(char **strs);
 void	free_triple_arr(float ***arr);
+int		close_win(int keycode, t_vars *vars);
 
 //ARRAY UTILS
 void 	print_tab(float ***tab);
@@ -110,5 +106,6 @@ float	***copy_int_arr(float ***arr);
 //MLX STUFF
 int		render_next_frame(t_vars *frame);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int		cross_exit(t_vars *vars);
 
 #endif

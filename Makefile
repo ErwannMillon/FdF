@@ -10,7 +10,7 @@ OPTIFLAGS = -Ofast -ffast-math
 #ADD CFLAGS!!!
 
 %.o: %.c
-	gcc $(OPTIFLAGS) -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
+	gcc -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
 all: $(NAME)
 $(NAME): libft $(OBJS)
 	$(CC) $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a

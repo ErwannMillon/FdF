@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:30 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 22:15:37 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/04 14:10:56 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	draw_square(t_data *data, int size, int color)
 	int x_counter = 0;
 
 	int x_cop;
-	while (y_counter < size && y < 1080)
+	while (y_counter < size && y < data->winheight)
 	{
 		x_cop = x;
 		x_counter = 0;
-		while (x_counter < size && y < 1080 && x_cop < 1920)
+		while (x_counter < size && y < data->winheight && x_cop < data->winwidth)
 		{
 			// ft_printf("ax: %d, ay: %d", x_cop, y);
 			my_mlx_pixel_put(data, x_cop, y, color);
@@ -55,7 +55,7 @@ void	draw_vertical_line(t_data *data, float *a, float *b, int color)
 	if	(ay < by)
 		slope = 1;
 	// printf("vertical: ax: %f, ay: %f, bx: %f, by: %f, \n", ax, ay, bx, by);
-	while (((int)ay != (int)by) && (ax < 1919 && ax > 1 && ay < 1079 && ay > 1))
+	while (((int)ay != (int)by) && (ax < data->winwidth && ax > 0 && ay < data->winheight && ay > 1))
 	{
 		// printf("vertical: ax: %f, ay: %f, bx: %f, by: %f, \n", ax, ay, bx, by);
 		my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
@@ -73,16 +73,17 @@ void	draw_straight_line(t_data *data, float *a, float *b, int color)
 	float	ay = a[1] + ORIGIN_Y;
 	float	bx = b[0] + ORIGIN_X;
 	float	by = b[1] + ORIGIN_Y;
-	// int		test[2];
 	float	slope;
+	
 	if (bx == ax)
 		draw_vertical_line(data, a, b, color);
 	else
 	{
 		slope = (by - ay) / (bx - ax);
-		while ((int)ax != (int)bx && (int)ay != (int)by && (ax < 1919 && ax > 1 && ay < 1079 && ay > 1))
+		while ((int)ax != (int)bx && (int)ay != (int)by)
 		{
-			my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
+			if (ax < data->winwidth && ax > 0 && ay < data->winheight && ay > 0)
+				my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
 			if (ax < bx)
 				ax += 0.25;
 			else
@@ -186,13 +187,17 @@ void draw_wireframe(float ***tab, float ***xyztab, t_data *data)
 	t_frame frame;
 	const int x_middle = xyztab[tab_height(xyztab) / 2][tab_width(xyztab) / 2][0];
 	const int y_middle = xyztab[tab_height(xyztab) / 2][tab_width(xyztab) / 2][1];
+	const int x = 1000;
+	const int y = 600;
 
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "Le Fdf le plus style au monde le couz");
-	img.img = mlx_new_image(vars.mlx, 1920, 1080);
+	vars.win = mlx_new_window(vars.mlx, x, y, "Le Fdf le plus style au monde");
+	img.img = mlx_new_image(vars.mlx, x, y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	translate(xyztab, 960 - x_middle, 540 - y_middle);
-	tab = flatten_arr(xyztab);
+	img.winwidth = x;
+	img.winheight = y;
+	// translate(xyztab, 500 - x_middle, 200 - y_middle);
+	tab = flatten_arr(tab);
 	draw_rows(tab, &img, 0x000000FF);
 	draw_cols(tab, &img, 0x000000FF);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
@@ -202,6 +207,9 @@ void draw_wireframe(float ***tab, float ***xyztab, t_data *data)
 	vars.color = 0x0000FF00;
 	vars.disco = 0;
 	vars.framenum = 0;
+	vars.winwidth = x;
+	vars.winheight = y;
+	mlx_hook(vars.win, 17, 0, cross_exit, &vars);
 	mlx_mouse_hook(vars.win, zoom_mouse_hook, &vars);
 	mlx_hook(vars.win, 2, 0, key_hook, &vars);
 	mlx_loop_hook(vars.mlx, render_next_frame, &vars);

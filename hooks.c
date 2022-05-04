@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:40 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 20:25:45 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/04 13:55:04 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,11 @@ int	render_next_frame(t_vars *frame)
 	static int oldframe = -1;
 	t_data	newimg;
 	// printf("franem");
-	if (frame->disco)
-		change_color(frame);
+
 	if (frame->framenum != oldframe)
 	{
+		if (frame->disco)
+			change_color(frame);
 		printf("rerendering\n");
 		draw_square(frame->img, 1920, 0x0000000);
 		draw_rows(frame->flattab, frame->img, frame->color);
