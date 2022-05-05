@@ -6,17 +6,18 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:23 by gmillon           #+#    #+#             */
-/*   Updated: 2022/04/17 19:36:31 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/05 20:45:03 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-void free_split(char **strs)
+
+void	free_split(char **strs)
 {
 	int	i;
 
 	i = 0;
-	while(strs[i])
+	while (strs[i])
 	{
 		free(strs[i]);
 		i++;

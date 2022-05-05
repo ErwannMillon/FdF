@@ -1,4 +1,4 @@
-SRCS := fdf.c win_utils.c hooks.c map_parse.c movement_operations.c free_functions.c matrix_operations.c draw_functions.c 
+SRCS := fdf.c draw_utils.c array_utils.c win_utils.c hooks.c map_parse.c movement_operations.c free_functions.c matrix_operations.c draw_functions.c 
 NAME = fdf
 CFLAGS = -Wall -Wextra -Werror
 HEADERS = libft.h ft_printf.h get_next_line.h fdf.h
