@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:17 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/06 13:19:23 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 22:25:31 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 void	fill_int_arr(float ***arr, int file, int linelen)
 {
-	int		i;
-	int		j;
+	int		c[2];
 	char	**results;
 	char	*line;
+	float	scale;
 
 	line = get_next_line(file);
-	i = 0;
+	c[0] = 0;
+	scale = 7037.684 * ((split_len(line) - 1) / 1920);
 	while (line)
 	{
-		arr[i] = malloc((linelen + 2) * sizeof(float *));
+		arr[c[0]] = malloc((linelen + 2) * sizeof(float *));
 		results = ft_split(line, ' ');
-		j = 0;
-		while (results[j] && results[j][0] != '\n')
+		c[1] = 0;
+		while (results[c[1]] && results[c[1]][0] != '\n')
 		{
-			scale_twod(arr, line, &i, &j);
-			arr[i][j][2] = ft_atoi(results[j]);
-			j++;
+			scale_twod(arr, c, scale);
+			arr[c[0]][c[1]][2] = ft_atoi(results[c[1]]);
+			c[1]++;
 		}
-		end_loop(arr, &i, &j, results);
-		free(line);
+		end_loop(arr, c, line, results);
 		line = get_next_line(file);
 	}
-	arr[i] = NULL;
+	arr[c[0]] = NULL;
 	scale_z(arr, 1);
 }
 

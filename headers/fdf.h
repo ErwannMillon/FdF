@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 21:02:25 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/06 13:20:48 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 22:24:27 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	free_triple_arr(float ***arr);
 int		close_win(int keycode, t_vars *vars);
 
 //ARRAY UTILS
+float	split_len(char *s);
 void	fill_int_arr(float ***arr, int file, int linelen);
 void	print_tab(float ***tab);
 float	***copy_int_arr(float ***arr, int should_free);
@@ -119,8 +120,8 @@ int		get_y_scale(t_vars *frame);
 void	z_min_max(float ***arr, float *min, float *max);
 void	scale_z(float ***arr, float scale);
 int		arr_length(char *filepath);
-void	scale_twod(float ***arr, char *line, int *i, int *j);
-void	end_loop(float ***arr, int *i, int *j, char **results);
+void	scale_twod(float ***arr, int *c, float scale);
+void	end_loop(float ***arr, int *c, char *line, char **results);
 int		line_length(char *filepath);
 
 //MLX STUFF

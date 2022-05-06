@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:24:21 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/06 13:24:22 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 22:24:24 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,17 @@ float	split_len(char *s)
 	return ((float)i);
 }
 
-void	scale_twod(float ***arr, char *line, int *i, int *j)
+void	scale_twod(float ***arr, int *c, float scale)
 {
-	float	scale;
-
-	scale = 7037.684 * ((split_len(line) - 1) / 1920);
-	arr[*i][*j] = malloc(4 * sizeof(float));
-	arr[*i][*j][0] = (*j * scale);
-	arr[*i][*j][1] = (*i * scale);
+	arr[c[0]][c[1]] = malloc(4 * sizeof(float));
+	arr[c[0]][c[1]][0] = (c[1] * scale);
+	arr[c[0]][c[1]][1] = (c[0] * scale);
 }
 
-void	end_loop(float ***arr, int *i, int *j, char **results)
+void	end_loop(float ***arr, int *c, char *line, char **results)
 {
-	arr[*i][*j] = NULL;
-	*i = *i + 1;
+	arr[c[0]][c[1]] = NULL;
+	c[0] = c[0] + 1;
 	free_split(results);
+	free(line);
 }

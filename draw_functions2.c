@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:24:31 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/06 13:24:32 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 22:35:57 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	draw_straight_line(t_data *data, float *a, float *b, int color)
 		{
 			if (ax < data->winwidth && ax > 0 && ay < data->winheight && ay > 0)
 				my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
-			ax += -copysign(0.25, (ax - bx));
-			ay += -copysign((fabs(slope) / 4), (ay - by));
+			ax += -copysign(1, (ax - bx));
+			ay += -copysign((fabs(slope)), (ay - by));
 		}
 	}
 }

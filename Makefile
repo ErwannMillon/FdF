@@ -10,10 +10,10 @@ OPTIFLAGS = -Ofast -ffast-math
 #ADD CFLAGS!!!
 
 %.o: %.c
-	gcc $(CFLAGS) -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
+	gcc -ggdb $(OPTIFLAGS) $(CFLAGS) -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
 all: $(NAME)
 $(NAME): libft.a $(OBJS)
-	gcc $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a
+	gcc -ggdb $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a
 libft.a:
 	$(MAKE) -C ./libftextended
 	cp libftextended/libft.a ./
