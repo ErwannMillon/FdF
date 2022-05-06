@@ -12,10 +12,10 @@ OPTIFLAGS = -Ofast -ffast-math
 %.o: %.c
 	gcc $(CFLAGS) -Imlx -I$(INCLUDEDIR) $(ASAN) -c $< -o $@
 all: $(NAME)
-$(NAME): libft $(OBJS)
-	$(CC) $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a
-libft:
-	$(MAKE) -C ./libftextended bonus
+$(NAME): libft.a $(OBJS)
+	gcc $(OBJS) -lm $(MLXFLAGS) $(ASAN) -o $(NAME) libft.a
+libft.a:
+	$(MAKE) -C ./libftextended
 	cp libftextended/libft.a ./
 test: $(NAME)
 	gcc -ggdb main.c $(SRCS) -Werror -Wextra -Wall libft.a
@@ -31,4 +31,4 @@ fclean: clean
 	rm -f $(NAME)
 re: fclean $(NAME)
 
-.PHONY:	all clean fclean re libft
+.PHONY:	all clean fclean re 
