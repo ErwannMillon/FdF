@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:52 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/05 20:03:21 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 13:20:34 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	tab_width(float ***tab)
 	return (j);
 }
 
-void	zoom(int button, int x, int y, t_vars *frame)
+void	zoom(int button, t_vars *frame)
 {
 	int			i;
 	int			j;

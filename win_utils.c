@@ -6,7 +6,7 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:56 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/05 20:05:54 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 12:55:09 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	close_win(int keycode, t_vars *vars)
 int	render_next_frame(t_vars *frame)
 {
 	static int	oldframe = -1;
-	t_data		newimg;
 
 	if (frame->framenum != oldframe)
 	{

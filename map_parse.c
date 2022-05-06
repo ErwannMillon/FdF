@@ -6,24 +6,11 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:17 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/05 20:49:44 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 13:19:23 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-float	split_len(char *s)
-{
-	int		i;
-	char	**arr;
-
-	arr = ft_split(s, ' ');
-	i = 0;
-	while (arr[i])
-		i++;
-	free_split(arr);
-	return ((float)i);
-}
 
 void	fill_int_arr(float ***arr, int file, int linelen)
 {
@@ -31,10 +18,8 @@ void	fill_int_arr(float ***arr, int file, int linelen)
 	int		j;
 	char	**results;
 	char	*line;
-	float	scale;
 
 	line = get_next_line(file);
-	scale = 7037.684 * ((split_len(line) - 1) / 1920);
 	i = 0;
 	while (line)
 	{
@@ -43,16 +28,12 @@ void	fill_int_arr(float ***arr, int file, int linelen)
 		j = 0;
 		while (results[j] && results[j][0] != '\n')
 		{
-			arr[i][j] = malloc(4 * sizeof(float));
-			arr[i][j][0] = (j * scale);
-			arr[i][j][1] = (i * scale);
+			scale_twod(arr, line, &i, &j);
 			arr[i][j][2] = ft_atoi(results[j]);
 			j++;
 		}
-		arr[i][j] = NULL;
-		i++;
+		end_loop(arr, &i, &j, results);
 		free(line);
-		free_split(results);
 		line = get_next_line(file);
 	}
 	arr[i] = NULL;
@@ -64,8 +45,6 @@ float	***copy_int_arr(float ***arr, int should_free)
 	float	***newarr;
 	int		i;
 	int		j;
-	char	**results;
-	char	*line;
 
 	newarr = malloc((tab_height(arr) + 1) * sizeof(float **));
 	i = 0;
@@ -93,7 +72,6 @@ float	***str_arr_atoi(char *filepath)
 	int		arr_len;
 	int		line_len;
 	float	***atoi_tab;
-	char	**str_arr;
 	int		file;
 
 	line_len = line_length(filepath);

@@ -6,171 +6,80 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:30 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/05 19:50:40 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 13:23:04 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	call_twice(t_data *img, float *linestart, int *c, float color)
 {
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	draw_straight_line(img, linestart, img->tab[c[0]][c[1]], color);
+	draw_straight_line(img, img->tab[c[0]][c[1]], linestart, color);
 }
-
-void	draw_square(t_data *data, int size, int color)
-{
-	const int	x = 0;
-	int			y;
-	int			y_counter;
-	int			x_counter;
-	int			x_cop;
-
-	y = 0;
-	y_counter = 0;
-	x_counter = 0;
-	while (y_counter < size && y < data->winheight)
-	{
-		x_cop = x;
-		x_counter = 0;
-		while (x_counter < size && y < data->winheight
-			&& x_cop < data->winwidth)
-		{
-			my_mlx_pixel_put(data, x_cop, y, color);
-			x_cop++;
-			x_counter++;
-		}
-		y++;
-		y_counter++;
-	}
-}
-
-void	draw_vertical_line(t_data *data, float *a, float *b, int color)
-{
-	float		ax;
-	float		ay;
-	const float	bx = b[0] + ORIGIN_X;
-	const float	by = b[1] + ORIGIN_Y;
-	int			slope;
-
-	ax = a[0] + ORIGIN_X;
-	ay = a[1] + ORIGIN_Y;
-	slope = -1;
-	if (ay < by)
-		slope = 1;
-	while (((int)ay != (int)by) && (ax < data->winwidth && ax > 0
-			&& ay < data->winheight && ay > 1))
-	{
-		my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
-		if (ax < bx)
-			ax++;
-		else
-			ax--;
-		ay += slope;
-	}
-}
-
-void	draw_straight_line(t_data *data, float *a, float *b, int color)
-{
-	float		ax;
-	float		ay;
-	const float	bx = b[0] + ORIGIN_X;
-	const float	by = b[1] + ORIGIN_Y;
-	float		slope;
-
-	ax = a[0] + ORIGIN_X;
-	ay = a[1] + ORIGIN_Y;
-	if (bx == ax)
-		draw_vertical_line(data, a, b, color);
-	else
-	{
-		slope = (by - ay) / (bx - ax);
-		while ((int)ax != (int)bx && (int)ay != (int)by)
-		{
-			if (ax < data->winwidth && ax > 0 && ay < data->winheight && ay > 0)
-				my_mlx_pixel_put(data, (int)(ax), (int)(ay), color);
-			ax += -copysign(0.25, (ax - bx));
-			ay += -copysign((fabs(slope) / 4), (ay - by));
-		}
-	}
-}
-
-
 
 void	draw_rows(float ***tab, t_data *img, float color)
 {
-	int		i;
-	int		j;
+	int		c[2];
 	float	slope;
 	float	*linestart;
 
-	i = 0;
-	j = 0;
-	while (tab[i])
+	c[0] = 0;
+	img->tab = tab;
+	while (tab[c[0]])
 	{
-		j = 0;
-		slope = abs_slope(tab[i][j], tab[i][j + 1]);
-		linestart = tab[i][j];
-		while (tab[i][j + 1])
+		c[1] = 0;
+		slope = abs_slope(tab[c[0]][c[1]], tab[c[0]][c[1] + 1]);
+		linestart = tab[c[0]][c[1]];
+		while (tab[c[0]][c[1] + 1])
 		{
-			if (slope != abs_slope(tab[i][j], tab[i][j + 1]))
+			if (slope != abs_slope(tab[c[0]][c[1]], tab[c[0]][c[1] + 1]))
 			{
-				draw_straight_line(img, linestart, tab[i][j], color);
-				draw_straight_line(img, tab[i][j], linestart, color);
-				linestart = tab[i][j];
-				slope = abs_slope(tab[i][j], tab[i][j + 1]);
+				call_twice(img, linestart, c, color);
+				linestart = tab[c[0]][c[1]];
+				slope = abs_slope(tab[c[0]][c[1]], tab[c[0]][c[1] + 1]);
 			}
-			j++;
+			c[1]++;
 		}
-		draw_straight_line(img, linestart, tab[i][j], color);
-		draw_straight_line(img, tab[i][j], linestart, color);
-		i++;
+		draw_straight_line(img, linestart, tab[c[0]][c[1]], color);
+		draw_straight_line(img, tab[c[0]][c[1]], linestart, color);
+		c[0]++;
 	}
 }
 
 void	draw_cols(float ***tab, t_data *img, float color)
 {
-	int		i;
-	int		j;
 	float	slope;
-	float	oldslope;
 	float	*linestart;
+	int		c[2];
 
-	i = 0;
-	j = 0;
-	while (tab[i][j])
+	c[0] = 0;
+	c[1] = 0;
+	img->tab = tab;
+	while (tab[c[0]][c[1]])
 	{
-		i = 0;
-		slope = abs_slope(tab[i][j], tab[i + 1][j]);
-		linestart = tab[i][j];
-		while (tab[i + 1] && tab[i][j] && tab[i + 1][j])
+		c[0] = 0;
+		slope = abs_slope(tab[c[0]][c[1]], tab[c[0] + 1][c[1]]);
+		linestart = tab[c[0]][c[1]];
+		while (tab[c[0] + 1] && tab[c[0]][c[1]] && tab[c[0] + 1][c[1]])
 		{
-			if (slope != abs_slope(tab[i][j], tab[i + 1][j]))
+			if (slope != abs_slope(tab[c[0]][c[1]], tab[c[0] + 1][c[1]]))
 			{
-				draw_straight_line(img, linestart, tab[i][j], color);
-				draw_straight_line(img, tab[i][j], linestart, color);
-				linestart = tab[i][j];
-				slope = abs_slope(tab[i][j], tab[i + 1][j]);
+				call_twice(img, linestart, c, color);
+				linestart = tab[c[0]][c[1]];
+				slope = abs_slope(tab[c[0]][c[1]], tab[c[0] + 1][c[1]]);
 			}
-			i++;
+			c[0]++;
 		}
-		if (slope == abs_slope(linestart, tab[i][j]))
-		{
-			draw_straight_line(img, linestart, tab[i][j], color);
-			draw_straight_line(img, tab[i][j], linestart, color);
-		}
-		j++;
+		call_twice(img, linestart, c, color);
+		c[1]++;
 	}
 }
 
-void draw_wireframe(float ***tab, float ***xyztab)
+void	draw_wireframe(float ***tab, float ***xyztab)
 {
-	float		*result;
 	t_data		img;
 	t_vars		vars;
-	t_frame		frame;
 
 	tab = flatten_arr(tab);
 	init_vars(tab, xyztab, &vars, &img);

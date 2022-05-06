@@ -6,19 +6,22 @@
 /*   By: gmillon <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 00:05:40 by gmillon           #+#    #+#             */
-/*   Updated: 2022/05/05 20:55:56 by gmillon          ###   ########.fr       */
+/*   Updated: 2022/05/06 13:22:19 by gmillon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	zoom_mouse_hook(int button, int x, int y, t_vars *frame)
+int	zoom_mouse_hook(int button, int x, int y, t_vars *frame)
 {
+	(void) x;
+	(void) y;
 	if (button == 4 || button == 5)
 	{
-		zoom(button, x, y, frame);
+		zoom(button, frame);
 		frame->framenum += 1;
 	}
+	return (0);
 }
 
 void	translate_hook(int keycode, t_vars *frame)
